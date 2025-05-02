@@ -12,7 +12,7 @@ export const SingleProduct = () => {
       setProduct(data);
     }
     fetchData();
-  }, [id]);
+  }, []);
 
   return (
     <>

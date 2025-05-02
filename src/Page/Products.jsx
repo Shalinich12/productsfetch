@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 export const Products = () => {
   const [data, setData] = useState([]);
+  const [cart, setCart] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -19,6 +20,7 @@ export const Products = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const selectedItems = data.slice(startIndex, startIndex + itemsPerPage);
 
+ 
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -48,9 +50,9 @@ export const Products = () => {
                   </h5>
                   <p className="card-text fw-bold mb-2">${item.price}</p>
                   <div className="mt-auto">
-                    <button className="btn btn-danger me-2 mb-2">
+                   <button className="btn btn-danger me-2 mb-2">
                       Add to Cart
-                    </button>
+                    </button>  
                     <Link to={`/product/${item.id}`}>
                       <button className="btn btn-outline-primary mb-2">
                         Details
