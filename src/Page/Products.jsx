@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const Products = () => {
   const [data, setData] = useState([]);
-  const [cart, setCart] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-
+  //  const { dispatch } = useContext(CartContext);
   useEffect(() => {
     async function fetchdata() {
       let { data } = await axios.get("https://fakestoreapi.com/products");
@@ -20,11 +19,21 @@ export const Products = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const selectedItems = data.slice(startIndex, startIndex + itemsPerPage);
 
- 
+  const handleAddToCart = (item) => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    
+    const exists = cart.find((i) => i.id === item.id);
+    if (!exists) {
+      cart.push(item);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      
+    } else {
+      alert("Item already in Cart");
+    }
+  };
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -50,9 +59,12 @@ export const Products = () => {
                   </h5>
                   <p className="card-text fw-bold mb-2">${item.price}</p>
                   <div className="mt-auto">
-                   <button className="btn btn-danger me-2 mb-2">
-                      Add to Cart
-                    </button>  
+                  <button
+                    className="btn btn-danger me-2 mb-2"
+                    onClick={() => handleAddToCart(item)}
+                  >
+                    Add to Cart
+                  </button>
                     <Link to={`/product/${item.id}`}>
                       <button className="btn btn-outline-primary mb-2">
                         Details
